@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+report.xml
+junit/
+*.mo
+*.pot
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+.scrapy
+docs/_build/
+target/
+.ipynb_checkpoints
+.profile
+.python-version
+
+# Local environment and secrets
+.venv/
+.env
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Gemini.md
+LICENSE.md
+opinions/chatgpt.md
+opinions/claude.md
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite3
+*.parquet
+*.pkl
+
+deployment_dist/
+
+# Conductor Wizard State
+conductor/setup_state.json
+
+# Gemini Local Notes
+Gemini.md
+
+memory/
+/memory
+/memory
+memory/main_6f829cf_1_2026-01-12.md
+memory/INDEX.md
+
+# Conductor
+conductor/
+updates_to_be_done.md
+
+
+#vscode related stuff
+/.vscoderun.err
+.vscode/terminals.json

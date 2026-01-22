@@ -1,0 +1,16 @@
+streamlit
+pandas
+openpyxl
+jupyter
+requests
+loguru
+plotly
+sentence-transformers
+pytest
+python-dotenv
+sqlalchemy
+alembic
+psycopg2-binary
+streamlit-authenticator
+pyyaml
+
