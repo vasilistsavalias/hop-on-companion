@@ -28,9 +28,16 @@ def render_admin_panel(current_user_id):
             st.divider()
             st.subheader("Edit User Role & Access")
             
-            user_to_edit = st.selectbox("Select User to Edit/Delete", options=users, format_func=lambda x: f"{x.username} ({x.role})")
+            # Fix: Use username strings for selectbox stability
+            user_map = {u.username: u for u in users}
+            selected_username = st.selectbox(
+                "Select User to Edit/Delete", 
+                options=list(user_map.keys()),
+                format_func=lambda x: f"{x} ({user_map[x].role})"
+            )
             
-            if user_to_edit:
+            if selected_username:
+                user_to_edit = user_map[selected_username]
                 col1, col2 = st.columns(2)
                 
                 with col1:
