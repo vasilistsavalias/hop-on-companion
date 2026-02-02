@@ -71,6 +71,11 @@ DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5433/hopon
 # Optional: AI API Keys (for Summaries/Search)
 OPENROUTER_API_KEY=your_key_here
 GEMINI_API_KEY=your_key_here
+
+# Optional: Auth + HF (recommended in production / Streamlit Cloud)
+HOPON_AUTH_KEY=your_random_32+_byte_secret
+HOPON_AUTH_COOKIE=hopon_cookie
+HF_TOKEN=your_hf_token
 ```
 
 ### 4. Initialize Database

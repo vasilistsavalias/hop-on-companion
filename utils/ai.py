@@ -5,7 +5,15 @@ from loguru import logger
 from typing import Optional, Dict, Any
 
 # Default model
-DEFAULT_MODEL = "xiaomi/mimo-v2-flash:free" 
+DEFAULT_MODEL = "openrouter/free"
+
+# Fallbacks (ordered)
+FALLBACK_MODELS = [
+    "xiaomi/mimo-v2-flash",
+    "stepfun/step-3.5-flash:free",
+    "nvidia/nemotron-3-nano-30b-a3b:free",
+    "liquid/lfm-2.5-1.2b-instruct:free",
+]
 
 def get_openrouter_api_key() -> Optional[str]:
     """Retrieves the OpenRouter API key from environment variables."""
@@ -65,29 +73,36 @@ def generate_project_brief(project_data: Dict[str, Any], model: str = DEFAULT_MO
     (Brief assessment of the market or scientific impact)
     """
 
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "user", "content": prompt}
-        ]
-    }
+    models_to_try = [model] + [m for m in FALLBACK_MODELS if m != model]
 
-    try:
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers=headers,
-            data=json.dumps(payload),
-            timeout=30
-        )
-        response.raise_for_status()
-        result = response.json()
-        
-        if 'choices' in result and len(result['choices']) > 0:
-            return result['choices'][0]['message']['content']
-        else:
-            logger.error(f"Unexpected response format from OpenRouter.")
-            return None
+    for model_id in models_to_try:
+        payload = {
+            "model": model_id,
+            "messages": [
+                {"role": "user", "content": prompt}
+            ]
+        }
 
-    except requests.exceptions.RequestException as e:
-        logger.error(f"OpenRouter API request failed: {e}")
-        return None
+        try:
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                data=json.dumps(payload),
+                timeout=30
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                if 'choices' in result and len(result['choices']) > 0:
+                    return result['choices'][0]['message']['content']
+                logger.error("Unexpected response format from OpenRouter.")
+                return None
+
+            logger.error(
+                f"OpenRouter request failed (model={model_id}, status={response.status_code}): {response.text}"
+            )
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"OpenRouter API request failed (model={model_id}): {e}")
+
+    return None

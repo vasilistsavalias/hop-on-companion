@@ -41,7 +41,7 @@ def render_charts(projects_df):
         st.write("#### Projects by Cluster")
         chart = get_cluster_chart(projects_df)
         if chart:
-            st.altair_chart(chart, use_container_width=True)
+            st.altair_chart(chart, width="stretch")
         else:
             st.info("Cluster data not available.")
 
@@ -91,7 +91,7 @@ def render_coordinator_stats(projects_df, orgs_df):
     chart = get_coordinator_chart(projects_df, orgs_df)
     
     if chart:
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart, width="stretch")
     else:
         st.info("No coordinator data found.")
         
@@ -129,7 +129,7 @@ def render_project_timeline(projects_df):
 
     st.subheader("⏳ Project Timeline")
     chart = get_timeline_chart(projects_df)
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width="stretch")
     st.caption("Displaying 30 most recent projects sorted by Start Date.")
     st.markdown("---")
 
@@ -182,6 +182,6 @@ def render_choropleth_map(projects_df, orgs_df):
     fig = get_choropleth_map(projects_df, orgs_df)
     
     if fig:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.warning("No geographic data available.")

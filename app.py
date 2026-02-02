@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import secrets
 import pandas as pd
 import streamlit_authenticator as stauth
 from dotenv import load_dotenv
@@ -7,6 +9,10 @@ from utils.db import get_all_users_config, get_user_id
 
 # --- Load Environment Variables ---
 load_dotenv()
+
+# --- Env Diagnostics (safe, no secrets) ---
+openrouter_key = os.getenv("OPENROUTER_API_KEY")
+logger.info(f"OPENROUTER_API_KEY present: {bool(openrouter_key)}; prefix: {openrouter_key[:6] + '...' if openrouter_key else 'None'}")
 
 # --- Logger Initialization ---
 if 'logger_configured' not in st.session_state:
@@ -19,10 +25,17 @@ st.set_page_config(page_title="HopOn Projects", layout="wide")
 users_config = get_all_users_config()
 credentials = {'usernames': users_config}
 
+auth_cookie_name = os.getenv("HOPON_AUTH_COOKIE", "hopon_cookie")
+auth_key = os.getenv("HOPON_AUTH_KEY")
+if not auth_key:
+    # Fallback for local/dev; Streamlit Cloud should set HOPON_AUTH_KEY in secrets.
+    auth_key = secrets.token_urlsafe(32)
+    logger.warning("HOPON_AUTH_KEY not set; generated a temporary key for this run.")
+
 authenticator = stauth.Authenticate(
     credentials,
-    'hopon_cookie',
-    'hopon_auth_key', # In production, verify this is random/secret
+    auth_cookie_name,
+    auth_key,
     cookie_expiry_days=30
 )
 

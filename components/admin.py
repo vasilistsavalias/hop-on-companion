@@ -23,7 +23,7 @@ def render_admin_panel(current_user_id):
             } for u in users]
         
         if data:
-            st.dataframe(data, use_container_width=True, hide_index=True)
+            st.dataframe(data, width="stretch", hide_index=True)
             
             st.divider()
             st.subheader("Edit User Role & Access")
